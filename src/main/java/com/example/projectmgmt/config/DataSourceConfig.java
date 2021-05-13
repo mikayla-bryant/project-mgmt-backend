@@ -9,37 +9,49 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.sql.DataSource;
 
+
 @Configuration
 public class DataSourceConfig
 {
-    @Value("${local.run.db:H2}")
+    @Value("${local.run.db:h2}")
     private String dbValue;
 
+
+    /**
+     * A config var for the database link - defaults to nothing
+     */
     @Value("${spring.datasource.url:}")
     private String dbURL;
 
+    /**
+     * The actual datasource configuration
+     *
+     * @return the datasource to use
+     */
     @Bean
     public DataSource dataSource()
     {
-        if (dbValue.equalsIgnoreCase(("POSTGRESQL")))
+        if (dbValue.equalsIgnoreCase("POSTGRESQL"))
         {
+            // Assume Heroku
             HikariConfig config = new HikariConfig();
             config.setDriverClassName("org.postgresql.Driver");
             config.setJdbcUrl(dbURL);
             return new HikariDataSource(config);
-        } else {
-            String URLString = "jdbc:h2:mem:testdb";
-            String DriverClass = "org.h2.Driver";
-            String DBUser = "sa";
-            String DBpass = "";
+        } else
+        {
+            // Assume H2
+            String myURLString = "jdbc:h2:mem:testdb";
+            String myDriverClass = "org.h2.Driver";
+            String myDBUser = "sa";
+            String myDBPassword = "";
 
             return DataSourceBuilder.create()
-                    .username(DBUser)
-                    .password(DBpass)
-                    .url(URLString)
-                    .driverClassName(DriverClass)
+                    .username(myDBUser)
+                    .password(myDBPassword)
+                    .url(myURLString)
+                    .driverClassName(myDriverClass)
                     .build();
-
         }
     }
 }
