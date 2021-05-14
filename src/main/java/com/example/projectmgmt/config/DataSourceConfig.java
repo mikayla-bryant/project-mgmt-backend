@@ -13,6 +13,9 @@ import javax.sql.DataSource;
 @Configuration
 public class DataSourceConfig
 {
+
+    static final String POSTGRESUSERNAME = System.getenv("POSTGRESUSERNAME");
+    static final String POSTGRESPASSWORD = System.getenv("POSTGRESPASSWORD");
     @Value("${local.run.db:h2}")
     private String dbValue;
 

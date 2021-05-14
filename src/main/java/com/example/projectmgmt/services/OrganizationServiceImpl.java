@@ -47,7 +47,7 @@ public class OrganizationServiceImpl implements OrganizationService
             newOrganization.setOrganizationid(organization.getOrganizationid());
         }
 
-        newOrganization.setOrganizationname((organization.getOrganizationname()));
+        newOrganization.setOrganizationname(organization.getOrganizationname());
         newOrganization.setUserdeletioninterval(organization.getUserdeletioninterval());
         newOrganization.getUsers().clear();
         for (User u : organization.getUsers())
