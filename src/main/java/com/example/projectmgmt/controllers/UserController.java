@@ -1,21 +1,22 @@
 package com.example.projectmgmt.controllers;
 
+import com.example.projectmgmt.models.Organization;
 import com.example.projectmgmt.models.User;
+import com.example.projectmgmt.models.dto.UserDTO;
+import com.example.projectmgmt.services.OrganizationService;
+import com.example.projectmgmt.services.ProjectService;
 import com.example.projectmgmt.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
-import java.util.Locale;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -25,6 +26,12 @@ public class UserController
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private OrganizationService organizationService;
+
+    @Autowired
+    private ProjectService projectService;
+
     // RETRIEVES A LIST OF ALL USERS IN APPLICATION (DELETE AFTER PROJECT COMPLETION)
     // http://localhost:2021/users/users
     @GetMapping(value = "/users")
@@ -33,6 +40,25 @@ public class UserController
         List<User> myUsers = userService.findAllUsers();
         return new ResponseEntity<>(myUsers, HttpStatus.OK);
     }
+
+    // RETRIEVES A LIST OF ALL USERS IN APPLICATION (DELETE AFTER PROJECT COMPLETION) IN DTO FORMAT
+    // http://localhost:2021/users/usersdto
+    @GetMapping(value = "/usersdto")
+    public ResponseEntity<?> listAllUsersDto()
+    {
+        List<UserDTO> myUsers = userService.findAllUsersAndReturnDto();
+        return new ResponseEntity<>(myUsers, HttpStatus.OK);
+    }
+
+    // RETRIEVES A LIST OF ALL USERS IN ORGANIZATION BY ORGANIZATION NAME
+    // http://localhost:2021/users/organization
+    @GetMapping(value = "/organization")
+    public ResponseEntity<?> listAllUsersByOrganization(@RequestParam String organizationName)
+    {
+        List<UserDTO> myUsers = userService.findAllUsersByOrganization(organizationService.findOrganizationByOrganizationName(organizationName));
+        return new ResponseEntity<>(myUsers, HttpStatus.OK);
+    }
+
 
     // RETRIEVES INFO ABOUT A SPECIFIC USER (BY ID)
     // http://localhost:2021/users/user/{USERID}
@@ -88,3 +114,12 @@ public class UserController
     }
 
 }
+
+// implement DTOs
+// If @ManyToOne, use DTO to safely access data
+// If @ManyToMany, use findBy... to search projects, users, etc with the associated id
+
+// Users
+// Clients
+
+

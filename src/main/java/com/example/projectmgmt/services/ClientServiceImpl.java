@@ -84,9 +84,10 @@ public class ClientServiceImpl implements ClientService
 
         return clientrepos.save(newClient);
     }
-
-
-
-
-
 }
+
+/*
+@ManyToOne
+Many Clients to One Organization
+Find Clients By Organization Name
+*/

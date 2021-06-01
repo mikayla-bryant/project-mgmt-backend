@@ -1,5 +1,6 @@
 package com.example.projectmgmt.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -20,13 +21,10 @@ public class Project
 
     private String description;
 
+
     @ManyToOne
     @JoinColumn(name = "clientid", nullable = true)
     private Client client;
-
-    @ManyToOne
-    @JoinColumn(name = "organizationid", nullable = true)
-    private Organization organization;
 
     @ManyToMany
     @JoinTable(name = "projectusers", joinColumns = @JoinColumn(name="projectid"), inverseJoinColumns = @JoinColumn(name = "userid"))
@@ -41,10 +39,13 @@ public class Project
     {
     }
 
-    public Project(String projectname, String description)
+    public Project(String projectname, String description, Client client, Set<User> assignedUsers, List<Ticket> tickets)
     {
         this.projectname = projectname;
         this.description = description;
+        this.client = client;
+        this.assignedUsers = assignedUsers;
+        this.tickets = tickets;
     }
 
     public Client getClient()
@@ -55,16 +56,6 @@ public class Project
     public void setClient(Client client)
     {
         this.client = client;
-    }
-
-    public Organization getOrganization()
-    {
-        return organization;
-    }
-
-    public void setOrganization(Organization organization)
-    {
-        this.organization = organization;
     }
 
     public Set<User> getAssignedUsers()

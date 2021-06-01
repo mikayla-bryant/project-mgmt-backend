@@ -1,6 +1,8 @@
 package com.example.projectmgmt.services;
 
 import com.example.projectmgmt.models.*;
+import com.example.projectmgmt.models.dto.OrganizationDTO;
+import com.example.projectmgmt.models.dto.UserInfo;
 import com.example.projectmgmt.repositories.OrganizationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,12 +42,12 @@ public class OrganizationServiceImpl implements OrganizationService
     {
         Organization newOrganization = new Organization();
 
-        if (organization.getOrganizationid() == null)
+        /*if (organization.getOrganizationid() == null)
         {
             organizationrepos.findById(organization.getOrganizationid())
                     .orElseThrow(() -> new EntityNotFoundException("Organization " + organization.getOrganizationid() + " Not Found"));
             newOrganization.setOrganizationid(organization.getOrganizationid());
-        }
+        }*/
 
         newOrganization.setOrganizationname(organization.getOrganizationname());
         newOrganization.setUserdeletioninterval(organization.getUserdeletioninterval());
@@ -58,15 +60,6 @@ public class OrganizationServiceImpl implements OrganizationService
             newUser.setOrganization(u.getOrganization());
 
             newOrganization.getUsers().add(newUser);
-        }
-        newOrganization.getProjects().clear();
-        for (Project p: organization.getProjects())
-        {
-            Project newProject = new Project();
-            newProject.setProjectname(p.getProjectname());
-            newProject.setOrganization(p.getOrganization());
-
-            newOrganization.getProjects().add(newProject);
         }
         newOrganization.getClients().clear();
         for (Client c: organization.getClients())
@@ -90,6 +83,12 @@ public class OrganizationServiceImpl implements OrganizationService
         }
 
         return organizationrepos.save(newOrganization);
+    }
+
+    @Override
+    public Organization findOrganizationByOrganizationName(String organizationName)
+    {
+        return organizationrepos.findOrganizationByOrganizationname(organizationName);
     }
 
 }

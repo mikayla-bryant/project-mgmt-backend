@@ -8,5 +8,5 @@ import java.util.UUID;
 
 public interface OrganizationRepository extends CrudRepository<Organization, UUID>
 {
-
+    Organization findOrganizationByOrganizationname(String name);
 }

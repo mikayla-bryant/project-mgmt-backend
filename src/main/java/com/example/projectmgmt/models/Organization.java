@@ -1,20 +1,27 @@
 package com.example.projectmgmt.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+
 @Entity
 @Table(name = "organizations")
 public class Organization
 {
+    /* You are facing this issue because the Organization model contains the object
+    of User model, which itself contains assigned Projects which contains the Organization model
+    */
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name="UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @GeneratedValue
+    @Type(type = "org.hibernate.type.UUIDCharType")
     @Column(name = "organizationid", updatable = false, nullable = false)
     private UUID organizationid;
 
@@ -22,18 +29,17 @@ public class Organization
 
     private int userdeletioninterval;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "organization", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties("organization")
     private List<User> users = new ArrayList<>();
 
-    @OneToMany(mappedBy = "organization", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnoreProperties("organization")
-    private List<Project> projects = new ArrayList<>();
-
+    @JsonIgnore
     @OneToMany(mappedBy = "organization", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties("organization")
     private List<Client> clients = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "organization", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties("organization")
     private List<Ticket> tickets = new ArrayList<>();
@@ -66,16 +72,6 @@ public class Organization
     public void setTickets(List<Ticket> tickets)
     {
         this.tickets = tickets;
-    }
-
-    public List<Project> getProjects()
-    {
-        return projects;
-    }
-
-    public void setProjects(List<Project> projects)
-    {
-        this.projects = projects;
     }
 
     public List<Client> getClients()

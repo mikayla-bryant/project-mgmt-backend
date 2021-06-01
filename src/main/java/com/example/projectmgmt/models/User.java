@@ -40,7 +40,7 @@ public class User
     Set<Email> emails = new HashSet<>();
 
     @ManyToMany(mappedBy = "assignedUsers")
-    @JsonIgnoreProperties("assignedUsers")
+    @JsonIgnoreProperties(value = {"assignedUsers"})
     Set<Project> projects = new HashSet<>();
 
     @OneToMany(mappedBy = "assignee", cascade = CascadeType.ALL, orphanRemoval = false)

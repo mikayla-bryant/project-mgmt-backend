@@ -1,6 +1,5 @@
 package com.example.projectmgmt.services;
 
-import com.example.projectmgmt.models.Client;
 import com.example.projectmgmt.models.Email;
 import com.example.projectmgmt.models.EmailReply;
 import com.example.projectmgmt.models.User;

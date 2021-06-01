@@ -53,7 +53,6 @@ public class ProjectServiceImpl implements ProjectService
         newProject.setProjectname(project.getProjectname());
         newProject.setDescription(project.getDescription());
         newProject.setClient(project.getClient());
-        newProject.setOrganization(project.getOrganization());
         newProject.getTickets().clear();
         for (Ticket t: project.getTickets())
         {
@@ -75,3 +74,12 @@ public class ProjectServiceImpl implements ProjectService
         return projectrepos.save(newProject);
     }
 }
+/*
+@ManyToOne
+Many Projects to One Client
+Find Projects By Client ID
+
+@ManyToMany
+Many Projects to Many Users
+Find Projects By User ID
+*/

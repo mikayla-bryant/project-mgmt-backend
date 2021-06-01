@@ -57,3 +57,9 @@ public class ContactServiceImpl implements ContactService
         return contactrepos.save(contact);
     }
 }
+
+/*
+@ManyToOne
+Many Contacts to One Client
+Find Contacts By Client ID
+*/

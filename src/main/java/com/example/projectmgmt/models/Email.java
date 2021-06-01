@@ -1,5 +1,6 @@
 package com.example.projectmgmt.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -27,6 +28,7 @@ public class Email
     @JsonIgnoreProperties("emails")
     private Set<User> recipients = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "email", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties("email")
     private List<EmailReply> replies = new ArrayList<>();

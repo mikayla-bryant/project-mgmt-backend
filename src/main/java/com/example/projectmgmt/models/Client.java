@@ -1,5 +1,6 @@
 package com.example.projectmgmt.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -36,10 +37,12 @@ public class Client
 
     private String website;
 
-    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = false)
+    @JsonIgnore
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties("client")
     private List<Project> projects = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties("client")
     private List<Contact> contacts = new ArrayList<>();
