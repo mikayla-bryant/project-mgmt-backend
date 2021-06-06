@@ -26,9 +26,14 @@ public class Project
     @JoinColumn(name = "clientid", nullable = true)
     private Client client;
 
+    @ManyToOne
+    @JoinColumn(name = "organizationid", nullable = true)
+    private Organization organization;
+
     @ManyToMany
     @JoinTable(name = "projectusers", joinColumns = @JoinColumn(name="projectid"), inverseJoinColumns = @JoinColumn(name = "userid"))
     private Set<User> assignedUsers = new HashSet<>();
+
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties("project")
@@ -108,4 +113,13 @@ public class Project
         this.description = description;
     }
 
+    public Organization getOrganization()
+    {
+        return organization;
+    }
+
+    public void setOrganization(Organization organization)
+    {
+        this.organization = organization;
+    }
 }

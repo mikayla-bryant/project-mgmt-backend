@@ -1,8 +1,6 @@
 package com.example.projectmgmt.controllers;
 
-import com.example.projectmgmt.models.Organization;
 import com.example.projectmgmt.models.User;
-import com.example.projectmgmt.models.dto.UserDTO;
 import com.example.projectmgmt.services.OrganizationService;
 import com.example.projectmgmt.services.ProjectService;
 import com.example.projectmgmt.services.UserService;
@@ -17,6 +15,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.UUID;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -41,21 +40,12 @@ public class UserController
         return new ResponseEntity<>(myUsers, HttpStatus.OK);
     }
 
-    // RETRIEVES A LIST OF ALL USERS IN APPLICATION (DELETE AFTER PROJECT COMPLETION) IN DTO FORMAT
-    // http://localhost:2021/users/usersdto
-    @GetMapping(value = "/usersdto")
-    public ResponseEntity<?> listAllUsersDto()
-    {
-        List<UserDTO> myUsers = userService.findAllUsersAndReturnDto();
-        return new ResponseEntity<>(myUsers, HttpStatus.OK);
-    }
-
-    // RETRIEVES A LIST OF ALL USERS IN ORGANIZATION BY ORGANIZATION NAME
+    // RETRIEVES A LIST OF ALL USERS IN ORGANIZATION BY ORGANIZATION ID
     // http://localhost:2021/users/organization
     @GetMapping(value = "/organization")
-    public ResponseEntity<?> listAllUsersByOrganization(@RequestParam String organizationName)
+    public ResponseEntity<?> listAllUsersByOrganization(@RequestParam UUID organizationId)
     {
-        List<UserDTO> myUsers = userService.findAllUsersByOrganization(organizationService.findOrganizationByOrganizationName(organizationName));
+        List<User> myUsers = userService.findAllUsersByOrganization(organizationService.findOrganizationByOrganizationID(organizationId));
         return new ResponseEntity<>(myUsers, HttpStatus.OK);
     }
 

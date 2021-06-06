@@ -2,6 +2,7 @@ package com.example.projectmgmt.controllers;
 
 import com.example.projectmgmt.models.Client;
 import com.example.projectmgmt.services.ClientService;
+import com.example.projectmgmt.services.OrganizationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/clients")
@@ -20,6 +22,9 @@ public class ClientController
     @Autowired
     private ClientService clientService;
 
+    @Autowired
+    private OrganizationService organizationService;
+
     // RETRIEVES A LIST OF ALL CLIENTS IN APPLICATION
     // http://localhost:2021/clients/clients
     @GetMapping(value = "/clients")
@@ -27,6 +32,15 @@ public class ClientController
     {
         List<Client> myClients = clientService.findAllClients();
         return new ResponseEntity<>(myClients, HttpStatus.OK);
+    }
+
+    // RETRIEVES A LIST OF ALL CLIENTS IN ORGANIZATION BY ORGANIZATION NAME
+    // http://localhost:2021/clients/organization
+    @GetMapping(value = "/organization")
+    public ResponseEntity<?> listAllClientsByOrganization(@RequestParam UUID organizationId)
+    {
+        List<Client> myUsers = clientService.findAllClientsByOrganization(organizationService.findOrganizationByOrganizationID(organizationId));
+        return new ResponseEntity<>(myUsers, HttpStatus.OK);
     }
 
     // RETRIEVES INFO ABOUT A SPECIFIC CLIENT (BY ID)

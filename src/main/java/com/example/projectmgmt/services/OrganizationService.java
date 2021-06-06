@@ -12,5 +12,5 @@ public interface OrganizationService
     List<Organization> findAllOrganizations();
     Organization save(Organization organization);
 
-    Organization findOrganizationByOrganizationName(String organizationName);
+    Organization findOrganizationByOrganizationID(UUID organizationName);
 }

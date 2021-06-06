@@ -1,5 +1,6 @@
 package com.example.projectmgmt.services;
 
+import com.example.projectmgmt.models.Organization;
 import com.example.projectmgmt.models.Project;
 import com.example.projectmgmt.models.Ticket;
 import com.example.projectmgmt.models.User;
@@ -53,6 +54,7 @@ public class ProjectServiceImpl implements ProjectService
         newProject.setProjectname(project.getProjectname());
         newProject.setDescription(project.getDescription());
         newProject.setClient(project.getClient());
+        newProject.setOrganization(project.getOrganization());
         newProject.getTickets().clear();
         for (Ticket t: project.getTickets())
         {
@@ -73,13 +75,15 @@ public class ProjectServiceImpl implements ProjectService
         }
         return projectrepos.save(newProject);
     }
-}
-/*
-@ManyToOne
-Many Projects to One Client
-Find Projects By Client ID
 
-@ManyToMany
-Many Projects to Many Users
-Find Projects By User ID
-*/
+    @Override
+    public List<Project> findAllProjectsByOrganization(Organization organization)
+    {
+        List<Project> list = new ArrayList<>();
+        projectrepos.findProjectsByOrganization(organization)
+                .iterator()
+                .forEachRemaining(list::add);
+
+        return list;
+    }
+}

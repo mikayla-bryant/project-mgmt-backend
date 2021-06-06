@@ -1,9 +1,9 @@
 package com.example.projectmgmt.services;
 
-import com.example.projectmgmt.models.*;
-import com.example.projectmgmt.models.dto.OrganizationInfo;
-import com.example.projectmgmt.models.dto.ProjectInfo;
-import com.example.projectmgmt.models.dto.UserDTO;
+import com.example.projectmgmt.models.Organization;
+import com.example.projectmgmt.models.Ticket;
+import com.example.projectmgmt.models.User;
+import com.example.projectmgmt.models.UserRoles;
 import com.example.projectmgmt.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,35 +47,6 @@ public class UserServiceImpl implements UserService
         return list;
     }
 
-    @Override
-    public List<UserDTO> findAllUsersAndReturnDto()
-    {
-        List<User> list = new ArrayList<>();
-        List<UserDTO> listUserDTO = new ArrayList<>();
-        userrepos.findAll()
-                .iterator()
-                .forEachRemaining(list::add);
-
-        for (User user : list)
-        {
-
-            OrganizationInfo organizationInfo = new OrganizationInfo();
-            organizationInfo.setOrganizationid(user.getOrganization().getOrganizationid().toString());
-            organizationInfo.setOrganizationname(user.getOrganization().getOrganizationname());
-            organizationInfo.setUserdeletioninterval(user.getOrganization().getUserdeletioninterval());
-
-            UserDTO userDTO = new UserDTO();
-            userDTO.setUserid(user.getUserid());
-            userDTO.setLastname(user.getLastname());
-            userDTO.setFirstname(user.getFirstname());
-            userDTO.setEmailaddress(user.getEmailaddress());
-            userDTO.setOrganization(organizationInfo);
-            listUserDTO.add(userDTO);
-        }
-
-
-        return listUserDTO;
-    }
 
     @Transactional
     @Override
@@ -116,33 +87,14 @@ public class UserServiceImpl implements UserService
     }
 
     @Override
-    public List<UserDTO> findAllUsersByOrganization(Organization organization)
+    public List<User> findAllUsersByOrganization(Organization organization)
     {
         List<User> list = new ArrayList<>();
-        List<UserDTO> listUserDTO = new ArrayList<>();
         userrepos.findUsersByOrganization(organization)
                 .iterator()
                 .forEachRemaining(list::add);
 
-        for (User user : list)
-        {
-
-            OrganizationInfo organizationInfo = new OrganizationInfo();
-            organizationInfo.setOrganizationid(user.getOrganization().getOrganizationid().toString());
-            organizationInfo.setOrganizationname(user.getOrganization().getOrganizationname());
-            organizationInfo.setUserdeletioninterval(user.getOrganization().getUserdeletioninterval());
-
-            UserDTO userDTO = new UserDTO();
-            userDTO.setUserid(user.getUserid());
-            userDTO.setLastname(user.getLastname());
-            userDTO.setFirstname(user.getFirstname());
-            userDTO.setEmailaddress(user.getEmailaddress());
-            userDTO.setOrganization(organizationInfo);
-            listUserDTO.add(userDTO);
-        }
-
-
-        return listUserDTO;
+        return list;
     }
 }
 

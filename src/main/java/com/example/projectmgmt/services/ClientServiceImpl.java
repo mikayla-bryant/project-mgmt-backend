@@ -1,9 +1,7 @@
 package com.example.projectmgmt.services;
 
-import com.example.projectmgmt.models.Client;
+import com.example.projectmgmt.models.*;
 
-import com.example.projectmgmt.models.Contact;
-import com.example.projectmgmt.models.Project;
 import com.example.projectmgmt.repositories.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -83,6 +81,45 @@ public class ClientServiceImpl implements ClientService
 
 
         return clientrepos.save(newClient);
+    }
+
+    @Override
+    public List<Client> findAllClientsByOrganization(Organization organization)
+    {
+        List<Client> list = new ArrayList<>();
+        //List<ClientDTO> listClientDTO = new ArrayList<>();
+        clientrepos.findClientsByOrganization(organization)
+                .iterator()
+                .forEachRemaining(list::add);
+/*
+        for (Client client : list)
+        {
+
+            OrganizationInfo organizationInfo = new OrganizationInfo();
+            organizationInfo.setOrganizationid(client.getOrganization().getOrganizationid().toString());
+            organizationInfo.setOrganizationname(client.getOrganization().getOrganizationname());
+            organizationInfo.setUserdeletioninterval(client.getOrganization().getUserdeletioninterval());
+
+            ClientDTO clientDTO = new ClientDTO();
+            clientDTO.setClientid(client.getClientid());
+            clientDTO.setOrganization(organizationInfo);
+            clientDTO.setCity(client.getCity());
+            clientDTO.setDescription(client.getDescription());
+            clientDTO.setCountry(client.getCountry());
+            clientDTO.setEmail(client.getEmail());
+            clientDTO.setPhonenumber(client.getPhonenumber());
+            clientDTO.setName(client.getName());
+            clientDTO.setState(client.getState());
+            clientDTO.setStreet1(client.getStreet1());
+            clientDTO.setStreet2(client.getStreet2());
+            clientDTO.setWebsite(client.getWebsite());
+            clientDTO.setZip(client.getZip());
+
+            listClientDTO.add(clientDTO);
+        }*/
+
+        return list;
+       // return listClientDTO;
     }
 }
 

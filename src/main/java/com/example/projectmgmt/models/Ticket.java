@@ -23,6 +23,8 @@ public class Ticket
 
     private String dateClosed;
 
+    private String owner;
+
 
     @ManyToOne
     @JoinColumn(name = "projectid", nullable = true)
@@ -150,5 +152,15 @@ public class Ticket
     public void setStatus(String status)
     {
         this.status = status;
+    }
+
+    public String getOwner()
+    {
+        return owner;
+    }
+
+    public void setOwner(String owner)
+    {
+        this.owner = owner;
     }
 }

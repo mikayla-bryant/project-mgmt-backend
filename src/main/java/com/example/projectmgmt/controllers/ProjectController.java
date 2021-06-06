@@ -2,6 +2,8 @@ package com.example.projectmgmt.controllers;
 
 import com.example.projectmgmt.models.Client;
 import com.example.projectmgmt.models.Project;
+import com.example.projectmgmt.models.User;
+import com.example.projectmgmt.services.OrganizationService;
 import com.example.projectmgmt.services.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -13,6 +15,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/projects")
@@ -21,12 +24,24 @@ public class ProjectController
     @Autowired
     private ProjectService projectService;
 
+    @Autowired
+    private OrganizationService organizationService;
+
     // RETRIEVES A LIST OF ALL PROJECTS IN APPLICATION
     // http://localhost:2021/projects/projects
     @GetMapping(value = "/projects")
     public ResponseEntity<?> listAllProjects()
     {
         List<Project> myProjects = projectService.findAllProjects();
+        return new ResponseEntity<>(myProjects, HttpStatus.OK);
+    }
+
+    // RETRIEVES A LIST OF ALL PROJECTS IN ORGANIZATION BY ORGANIZATION ID
+    // http://localhost:2021/users/organization
+    @GetMapping(value = "/organization")
+    public ResponseEntity<?> listAllUsersByOrganization(@RequestParam UUID organizationId)
+    {
+        List<Project> myProjects = projectService.findAllProjectsByOrganization(organizationService.findOrganizationByOrganizationID(organizationId));
         return new ResponseEntity<>(myProjects, HttpStatus.OK);
     }
 

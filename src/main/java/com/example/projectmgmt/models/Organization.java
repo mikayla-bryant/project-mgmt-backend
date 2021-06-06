@@ -44,6 +44,11 @@ public class Organization
     @JsonIgnoreProperties("organization")
     private List<Ticket> tickets = new ArrayList<>();
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "organization", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("organization")
+    private List<Project> projects = new ArrayList<>();
+
     public Organization()
     {
     }
@@ -112,5 +117,15 @@ public class Organization
     public void setUserdeletioninterval(int userdeletioninterval)
     {
         this.userdeletioninterval = userdeletioninterval;
+    }
+
+    public List<Project> getProjects()
+    {
+        return projects;
+    }
+
+    public void setProjects(List<Project> projects)
+    {
+        this.projects = projects;
     }
 }

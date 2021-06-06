@@ -1,8 +1,6 @@
 package com.example.projectmgmt.services;
 
 import com.example.projectmgmt.models.*;
-import com.example.projectmgmt.models.dto.OrganizationDTO;
-import com.example.projectmgmt.models.dto.UserInfo;
 import com.example.projectmgmt.repositories.OrganizationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -82,13 +80,23 @@ public class OrganizationServiceImpl implements OrganizationService
             newOrganization.getTickets().add(newTicket);
         }
 
+        for (Project p: organization.getProjects())
+        {
+            Project newProject = new Project();
+            newProject.setProjectname(p.getProjectname());
+            newProject.setDescription(p.getDescription());
+            newProject.setOrganization(p.getOrganization());
+
+            newOrganization.getProjects().add(newProject);
+        }
+
         return organizationrepos.save(newOrganization);
     }
 
     @Override
-    public Organization findOrganizationByOrganizationName(String organizationName)
+    public Organization findOrganizationByOrganizationID(UUID organizationName)
     {
-        return organizationrepos.findOrganizationByOrganizationname(organizationName);
+        return organizationrepos.findOrganizationByOrganizationid(organizationName);
     }
 
 }

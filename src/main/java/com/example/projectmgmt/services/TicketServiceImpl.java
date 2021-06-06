@@ -1,5 +1,6 @@
 package com.example.projectmgmt.services;
 
+import com.example.projectmgmt.models.Organization;
 import com.example.projectmgmt.models.Ticket;
 import com.example.projectmgmt.models.User;
 import com.example.projectmgmt.repositories.TicketRepository;
@@ -54,6 +55,18 @@ public class TicketServiceImpl implements TicketService
         newTicket.setProject(ticket.getProject());
         newTicket.setAssignee(ticket.getAssignee());
         newTicket.setOrganization(ticket.getOrganization());
+        newTicket.setOwner(ticket.getOwner());
         return ticketrepos.save(ticket);
+    }
+
+    @Override
+    public List<Ticket> findAllTicketsByOrganization(Organization organization)
+    {
+        List<Ticket> list = new ArrayList<>();
+        ticketrepos.findTicketsByOrganization(organization)
+                .iterator()
+                .forEachRemaining(list::add);
+
+        return list;
     }
 }

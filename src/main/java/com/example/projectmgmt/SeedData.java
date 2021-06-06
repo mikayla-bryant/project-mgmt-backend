@@ -32,6 +32,9 @@ public class SeedData implements CommandLineRunner
     @Autowired
     ContactService contactService;
 
+    @Autowired
+    TicketService ticketService;
+
     @Transactional
     @Override
     public void run(String[] args) throws Exception
@@ -135,9 +138,9 @@ public class SeedData implements CommandLineRunner
           c2.setOrganization(o1);
           c3.setOrganization(o1);
 
-     c1 = clientService.save(c1);
-     c2 = clientService.save(c2);
-     c3 = clientService.save(c3);
+         c1 = clientService.save(c1);
+         c2 = clientService.save(c2);
+         c3 = clientService.save(c3);
 
         Project p1 = new Project();
         Project p2 = new Project();
@@ -157,6 +160,10 @@ public class SeedData implements CommandLineRunner
         p2.setClient(c2);
         p3.setClient(c3);
 
+        p1.setOrganization(o1);
+        p2.setOrganization(o1);
+        p3.setOrganization(o1);
+
         p1.getAssignedUsers().add(u2);
 
         p1 = projectService.save(p1);
@@ -164,25 +171,28 @@ public class SeedData implements CommandLineRunner
         p3 = projectService.save(p3);
 
 
-Contact co1 = new Contact();
-co1.setFirstname("Mary");
-co1.setLastname("Sue");
-co1.setCountry("United States of America");
-co1.setCity("New York");
-co1.setEmail("msue@email.com");
-co1.setPhonenumber("123-234-3456");
-co1.setClient(c1);
+        Contact co1 = new Contact();
+        co1.setFirstname("Mary");
+        co1.setLastname("Sue");
+        co1.setCountry("United States of America");
+        co1.setCity("New York");
+        co1.setEmail("msue@email.com");
+        co1.setPhonenumber("123-234-3456");
+        co1.setClient(c1);
 
-co1 = contactService.save(co1);
+        co1 = contactService.save(co1);
 
-
-
-
-
-
-
-
-
+        Ticket t1 = new Ticket();
+        t1.setOrganization(o1);
+        t1.setType("Bug");
+        t1.setStatus("Open");
+        t1.setPriority("High");
+        t1.setSubject("ALL OF OUR SERVERS ARE FAILING!!");
+        t1.setDescription("Pls help everything is failing right now.. AHHH");
+        t1.setOwner("SpongeBob SquarePants");
+        t1.setProject(p3);
+        t1.setAssignee(u4);
+        t1 = ticketService.save(t1);
 
     }
 }

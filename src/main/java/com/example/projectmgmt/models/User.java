@@ -43,6 +43,7 @@ public class User
     @JsonIgnoreProperties(value = {"assignedUsers"})
     Set<Project> projects = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "assignee", cascade = CascadeType.ALL, orphanRemoval = false)
     @JsonIgnoreProperties("assignee")
     private List<Ticket> assignedtickets = new ArrayList<>();
