@@ -35,15 +35,18 @@ public class SeedData implements CommandLineRunner
     @Autowired
     TicketService ticketService;
 
+    @Autowired
+    EmailService emailService;
+
     @Transactional
     @Override
     public void run(String[] args) throws Exception
     {
-       Organization o1 = new Organization();
-       o1.setOrganizationname("Pebble Technologies");
-       o1.setUserdeletioninterval(0);
+        Organization o1 = new Organization();
+        o1.setOrganizationname("Pebble Technologies");
+        o1.setUserdeletioninterval(0);
 
-       o1 = organizationService.save(o1);
+        o1 = organizationService.save(o1);
 
         Role r1 = new Role("OWNER");
         Role r2 = new Role("ADMIN");
@@ -134,13 +137,13 @@ public class SeedData implements CommandLineRunner
         c3.setDescription("Figma is a technology company that provides a web-based suite of design, prototyping, and collaboration features that help teams create, test, and share design systems across the organization");
         c3.setWebsite("https://www.figma.com");
 
-          c1.setOrganization(o1);
-          c2.setOrganization(o1);
-          c3.setOrganization(o1);
+        c1.setOrganization(o1);
+        c2.setOrganization(o1);
+        c3.setOrganization(o1);
 
-         c1 = clientService.save(c1);
-         c2 = clientService.save(c2);
-         c3 = clientService.save(c3);
+        c1 = clientService.save(c1);
+        c2 = clientService.save(c2);
+        c3 = clientService.save(c3);
 
         Project p1 = new Project();
         Project p2 = new Project();
@@ -194,5 +197,12 @@ public class SeedData implements CommandLineRunner
         t1.setAssignee(u4);
         t1 = ticketService.save(t1);
 
+        Email e1 = new Email();
+        e1.setSubject("Don't forget deadline coming up next week");
+        e1.setEmailtext("Build social with a goal to get buy in. Leveraging vertical integration to, consequently, innovate. Take agile with a goal to build ROI. Generating key demographics with the aim to infiltrate new markets. Utilising relevant and engaging content so that as an end result, we re-target key demographics. Engage user engagement in order to create actionable insights.");
+        e1.setStarred(false);
+        e1.getRecipients().add(u1);
+        e1.getRecipients().add(u4);
+        e1 = emailService.save(e1);
     }
 }

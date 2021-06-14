@@ -12,4 +12,5 @@ public interface UserService
     List<User> findAllUsers();
     User save(User user);
     List<User> findAllUsersByOrganization(Organization organization);
+    User update(User user, long userid);
 }

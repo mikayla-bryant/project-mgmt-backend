@@ -55,6 +55,7 @@ public class Client
     {
     }
 
+
     public Client(String name, String street1, String street2, String city, String state, String zip, String country, String phonenumber, String email, String description, String website, List<Project> projects, List<Contact> contacts, Organization organization)
     {
         this.name = name;

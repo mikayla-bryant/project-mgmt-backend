@@ -79,16 +79,12 @@ public class UserController
 
     // UPDATES AN EXISTING USER (BY ID)
     // http://localhost:2021/users/user/{USERID}
-    @PutMapping(value = "/user/{userid}", consumes = {"application/json"})
-    public ResponseEntity<?> updateFullUser(
-            @Valid
-            @RequestBody
-                    User updateUser,
-            @PathVariable
-                    long userid
-    ){
-        updateUser.setUserid(userid);
-        userService.save(updateUser);
+    @PatchMapping(value = "/user/{ids}", consumes = {"application/json"})
+    public ResponseEntity<?> updateUser (@RequestBody User updateUser,
+            @PathVariable List<Long> ids){
+        for(Long id: ids){
+            userService.update(updateUser, id);
+        }
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -105,11 +101,5 @@ public class UserController
 
 }
 
-// implement DTOs
-// If @ManyToOne, use DTO to safely access data
-// If @ManyToMany, use findBy... to search projects, users, etc with the associated id
-
-// Users
-// Clients
 
 

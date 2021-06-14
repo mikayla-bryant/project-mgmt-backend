@@ -1,9 +1,7 @@
 package com.example.projectmgmt.services;
 
-import com.example.projectmgmt.models.Organization;
-import com.example.projectmgmt.models.Ticket;
-import com.example.projectmgmt.models.User;
-import com.example.projectmgmt.models.UserRoles;
+import com.example.projectmgmt.models.*;
+import com.example.projectmgmt.repositories.RoleRepository;
 import com.example.projectmgmt.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +16,9 @@ public class UserServiceImpl implements UserService
 {
     @Autowired
     private UserRepository userrepos;
+
+    @Autowired
+    private RoleRepository rolerepos;
 
     @Override
     public User findUserById(long userid)
@@ -95,6 +96,42 @@ public class UserServiceImpl implements UserService
                 .forEachRemaining(list::add);
 
         return list;
+    }
+
+    @Transactional
+    @Override
+    public User update(User user, long userid)
+    {
+        User currentUser = userrepos.findById(userid).orElseThrow(()-> new EntityNotFoundException("User #" + userid + " not found"));
+        if(user.getFirstname() != null)
+        {
+            currentUser.setFirstname(user.getFirstname());
+        }
+        if(user.getLastname() != null)
+        {
+            currentUser.setLastname(user.getLastname());
+        }
+        if (user.getPassword() != null)
+        {
+            currentUser.setPassword(user.getPassword());
+        }
+        if (user.getRoles().size() > 0)
+        {
+            currentUser.getRoles().clear();
+            for (UserRoles r: user.getRoles())
+            {
+                Role newRole = rolerepos.findByName(r.getRole().getName());
+                UserRoles newUserRoles = new UserRoles();
+                newUserRoles.setUser(currentUser);
+                newUserRoles.setRole(newRole);
+                currentUser.getRoles().add(newUserRoles);
+                System.out.println(newRole);
+            }
+
+        }
+       return userrepos.save(currentUser);
+
+
     }
 }
 

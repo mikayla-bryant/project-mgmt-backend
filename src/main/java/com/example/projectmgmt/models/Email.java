@@ -19,6 +19,7 @@ public class Email
 
     private String subject;
 
+    @Column(columnDefinition = "LONGTEXT")
     private String emailtext;
 
     private boolean starred;
