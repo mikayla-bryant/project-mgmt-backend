@@ -71,18 +71,15 @@ public class ProjectController
         responseHeaders.setLocation(newUserURI);
         return new ResponseEntity<>(newProject, responseHeaders, HttpStatus.CREATED);
     }
-    // UPDATES AN EXISTING PROJECT (BY ID)
-    // http://localhost:2021/projects/project/{CLIENTID}
-    @PutMapping(value = "/project/{projectid}", consumes = {"application/json"})
-    public ResponseEntity<?> updateFullProject(
-            @Valid
-            @RequestBody
-                    Project updateProject,
-            @PathVariable
-                    long projectid
-    ){
-        updateProject.setProjectid(projectid);
-        projectService.save(updateProject);
+
+    // UPDATES AN EXISTING CLIENT (BY ID)
+    // http://localhost:2021/project/project/{PROJECT}
+    @PatchMapping(value = "/project/{id}", consumes = {"application/json"})
+    public ResponseEntity<?> updateProject (@RequestBody Project updateProject,
+                                           @PathVariable Long id){
+
+        projectService.update(updateProject, id);
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

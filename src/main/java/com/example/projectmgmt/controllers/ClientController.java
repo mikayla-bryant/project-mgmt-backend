@@ -1,6 +1,7 @@
 package com.example.projectmgmt.controllers;
 
 import com.example.projectmgmt.models.Client;
+import com.example.projectmgmt.models.User;
 import com.example.projectmgmt.services.ClientService;
 import com.example.projectmgmt.services.OrganizationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,17 +72,14 @@ public class ClientController
     }
 
     // UPDATES AN EXISTING CLIENT (BY ID)
-    // http://localhost:2021/clients/client/{CLIENTID}
-    @PutMapping(value = "/client/{clientid}", consumes = {"application/json"})
-    public ResponseEntity<?> updateFullClient(
-            @Valid
-            @RequestBody
-                    Client updateClient,
-            @PathVariable
-                    long clientid
-    ){
-        updateClient.setClientid(clientid);
-        clientService.save(updateClient);
+    // http://localhost:2021/clients/client/{CLIENT}
+    @PatchMapping(value = "/client/{id}", consumes = {"application/json"})
+    public ResponseEntity<?> updateClient (@RequestBody Client updateClient,
+                                         @PathVariable Long id){
+
+            clientService.update(updateClient, id);
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
 }

@@ -10,5 +10,6 @@ import java.util.List;
 public interface UserRepository extends CrudRepository<User, Long>
 {
     User findByEmailaddress(String emailaddress);
+    User findByUserid(Long userid);
     List<User> findUsersByOrganization(Organization organization);
 }

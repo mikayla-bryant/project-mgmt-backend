@@ -5,6 +5,7 @@ import com.example.projectmgmt.models.Project;
 import com.example.projectmgmt.models.Ticket;
 import com.example.projectmgmt.models.User;
 import com.example.projectmgmt.repositories.ProjectRepository;
+import com.example.projectmgmt.repositories.TicketRepository;
 import com.example.projectmgmt.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,9 @@ public class ProjectServiceImpl implements ProjectService
 
     @Autowired
     private UserRepository userrepos;
+
+    @Autowired
+    private TicketRepository ticketrepos;
 
     @Override
     public Project findProjectById(long projectid)
@@ -85,5 +89,54 @@ public class ProjectServiceImpl implements ProjectService
                 .forEachRemaining(list::add);
 
         return list;
+    }
+
+    @Override
+    public Project update(Project project, long projectid)
+    {
+        Project currentProject = projectrepos.findById(projectid).orElseThrow(EntityNotFoundException::new);
+        if (project.getProjectname() != null)
+        {
+            currentProject.setProjectname(project.getProjectname());
+        }
+        if (project.getDescription() != null)
+        {
+            currentProject.setDescription(project.getDescription());
+        }
+        if (project.getClient() != null)
+        {
+            currentProject.setClient(project.getClient());
+        }
+        if (project.getOrganization() != null)
+        {
+            currentProject.setOrganization(project.getOrganization());
+        }
+        if (project.getAssignedUsers().size() > 0)
+        {
+            currentProject.getAssignedUsers().clear();
+            for (User u: project.getAssignedUsers())
+            {
+              User newUser = userrepos.findByUserid(u.getUserid());
+              currentProject.getAssignedUsers().add(newUser);
+            }
+        }
+        if (project.getTickets().size() > 0)
+        {
+            currentProject.getTickets().clear();
+            for (Ticket t: project.getTickets())
+            {
+               Ticket newTicket = new Ticket();
+               newTicket.setSubject(t.getSubject());
+               newTicket.setDescription(t.getDescription());
+               newTicket.setPriority(t.getPriority());
+               newTicket.setStatus(t.getStatus());
+               newTicket.setType(t.getType());
+               newTicket.setDateClosed(t.getDateClosed());
+               newTicket.setProject(currentProject);
+               currentProject.getTickets().add(newTicket);
+            }
+
+        }
+        return projectrepos.save(currentProject);
     }
 }

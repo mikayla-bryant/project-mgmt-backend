@@ -28,6 +28,17 @@ public class UserServiceImpl implements UserService
     }
 
     @Override
+    public User findByUserid(long userid)
+    {
+        User uu = userrepos.findByUserid(userid);
+        if (uu == null)
+        {
+            throw new EntityNotFoundException();
+        }
+        return uu;
+    }
+
+    @Override
     public User findByEmailaddress(String emailaddress)
     {
         User uu = userrepos.findByEmailaddress(emailaddress.toLowerCase());
@@ -37,6 +48,17 @@ public class UserServiceImpl implements UserService
         }
         return uu;
     }
+
+    /*@Override
+    public User findByUserid(long userid)
+    {
+        User uu = userrepos.findByUserid(userid);
+        if (uu == null)
+        {
+            throw new EntityNotFoundException();
+        }
+        return uu;
+    }*/
 
     @Override
     public List<User> findAllUsers()
@@ -133,6 +155,8 @@ public class UserServiceImpl implements UserService
 
 
     }
+
+
 }
 
 

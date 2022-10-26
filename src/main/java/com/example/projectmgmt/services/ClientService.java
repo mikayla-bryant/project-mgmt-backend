@@ -11,4 +11,5 @@ public interface ClientService
     List<Client> findAllClients();
     Client save(Client client);
     List<Client> findAllClientsByOrganization(Organization organization);
+    Client update(Client client, long clientid);
 }

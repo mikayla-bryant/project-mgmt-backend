@@ -3,6 +3,7 @@ package com.example.projectmgmt.services;
 import com.example.projectmgmt.models.*;
 
 import com.example.projectmgmt.repositories.ClientRepository;
+import com.example.projectmgmt.repositories.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,9 @@ public class ClientServiceImpl implements ClientService
 {
     @Autowired
     private ClientRepository clientrepos;
+
+    @Autowired
+    private ProjectRepository projectrepos;
 
     @Override
     public Client findClientById(long clientid)
@@ -121,10 +125,72 @@ public class ClientServiceImpl implements ClientService
         return list;
        // return listClientDTO;
     }
+
+    @Override
+    public Client update(Client client, long clientid)
+    {
+        Client currentClient = clientrepos.findById(clientid).orElseThrow(()-> new EntityNotFoundException("Client #" + clientid + " not found"));
+        if(client.getName() != null)
+        {
+            currentClient.setName(client.getName());
+        }
+        if(client.getStreet1() != null)
+        {
+            currentClient.setStreet1(client.getStreet1());
+        }
+        if(client.getStreet2() != null)
+        {
+            currentClient.setStreet2(client.getStreet2());
+        }
+        if(client.getCity() != null)
+        {
+            currentClient.setCity(client.getCity());
+        }
+        if(client.getState() != null)
+        {
+            currentClient.setState(client.getState());
+        }
+        if(client.getZip() != null)
+        {
+            currentClient.setZip(client.getZip());
+        }
+        if(client.getCountry() != null)
+        {
+            currentClient.setCountry(client.getCountry());
+        }
+        if (client.getPhonenumber() != null)
+        {
+            currentClient.setPhonenumber(client.getPhonenumber());
+        }
+        if (client.getEmail() != null)
+        {
+            currentClient.setEmail(client.getEmail());
+        }
+        if(client.getDescription() != null)
+        {
+            currentClient.setDescription(client.getDescription());
+        }
+        if (client.getWebsite() != null)
+        {
+            currentClient.setWebsite(client.getWebsite());
+        }
+        if (client.getOrganization() != null)
+        {
+            currentClient.setOrganization(client.getOrganization());
+        }
+        if (client.getProjects().size() > 0)
+        {
+            currentClient.getProjects().clear();
+            for (Project p: client.getProjects())
+            {
+                Project newProject = new Project();
+                newProject.setProjectname(p.getProjectname());
+                // Add the rest of project keys
+                currentClient.getProjects().add(newProject);
+            }
+        }
+        return clientrepos.save(currentClient);
+
+    }
 }
 
-/*
-@ManyToOne
-Many Clients to One Organization
-Find Clients By Organization Name
-*/

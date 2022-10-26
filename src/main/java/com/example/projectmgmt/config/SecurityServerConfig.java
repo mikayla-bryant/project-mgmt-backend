@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
+import org.springframework.security.saml.SAMLEntryPoint;
 
 import javax.annotation.Resource;
 
@@ -26,6 +28,7 @@ import javax.annotation.Resource;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityServerConfig extends WebSecurityConfigurerAdapter
 {
+
     /**
      * Allows us to customize the Authentication Manager. Normally, as we do here, we just take the defaults.
      *
@@ -45,7 +48,8 @@ public class SecurityServerConfig extends WebSecurityConfigurerAdapter
      * Connects the user details used by Spring Security to our implementation of it
      */
 
-    // !!MIGHT HAVE A PROBLEM!!
+
+
     @Autowired
     public UserDetailsService securityUserDetails;
     /**

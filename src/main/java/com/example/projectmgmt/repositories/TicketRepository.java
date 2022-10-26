@@ -10,4 +10,5 @@ import java.util.List;
 public interface TicketRepository extends CrudRepository<Ticket, Long>
 {
     List<Ticket> findTicketsByOrganization(Organization organization);
+    Ticket findByTicketid(Long ticketid);
 }
